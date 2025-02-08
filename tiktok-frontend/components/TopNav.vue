@@ -36,12 +36,56 @@
           <span class="px-2 font-medium text-[15px]">Upload</span>
         </button>
 
-        <div class="flex items-center">
+        <div v-if="false" class="flex items-center">
           <button
             class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]"
           >
             <span class="mx-4 font-medium text-[15px]">Login</span>
           </button>
+          <Icon name="mdi:dots-vertical" color="#161724" size="25"></Icon>
+        </div>
+
+        <div class="flex items-center">
+          <Icon
+            class="ml-1 mr-4"
+            name="carbon:send-alt"
+            color="#161724"
+            size="30"
+          ></Icon>
+
+          <Icon class="mr-5" name="bx:message-detail" color="#161724" size="27">
+          </Icon>
+
+          <div class="relative">
+            <button class="ml-1" @click="($event) => (showMenu = !showMenu)">
+              <img
+                class="rounded-full"
+                width="33"
+                src="https://picsum.photos/id/83/300/320"
+              />
+            </button>
+            <div
+              v-if="showMenu"
+              id="PopMenu"
+              class="absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2"
+            >
+              <nuxt-link
+                @click="showMenu = false"
+                class="flex items-center justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer"
+              >
+                <Icon name="ph:user" size="20"> </Icon>
+                <span class="pl-2 font-semibold text-sm">Profile</span>
+              </nuxt-link>
+              <div
+                to=""
+                @click="($event) => (showMenu = false)"
+                class="flex items-center justify-start py-3 px-1.5 hover:bg-gray-100 border-t cursor-pointer"
+              >
+                <Icon name="ic:outline-login" size="20"> </Icon>
+                <span class="pl-2 font-semibold text-sm">Logout</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -50,4 +94,5 @@
 
 <script setup>
 const route = useRoute();
+let showMenu = ref(false);
 </script>
