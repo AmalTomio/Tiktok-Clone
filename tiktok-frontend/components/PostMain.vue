@@ -58,6 +58,40 @@
             src="~assets/images/tiktok-logo-white.png"
           />
         </div>
+
+        <div class="relative mr-[75px]">
+          <div class="absolute bottom-0 pl-2">
+            <div class="pb-4 text-center">
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 cursor-pointer"
+              >
+                <Icon name="mdi:heart" size="25"></Icon>
+              </button>
+
+              <span class="text-xs text-gray-800 font-semibold">34</span>
+            </div>
+
+            <div class="pb-4 text-center">
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 cursor-pointer"
+              >
+                <Icon name="bx:bxs-message-rounded-dots" size="25"></Icon>
+              </button>
+
+              <span class="text-xs text-gray-800 font-semibold">34</span>
+            </div>
+
+            <div class="pb-4 text-center">
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 cursor-pointer"
+              >
+                <Icon name="ri:share-forward-fill" size="25"></Icon>
+              </button>
+
+              <span class="text-xs text-gray-800 font-semibold">34</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
