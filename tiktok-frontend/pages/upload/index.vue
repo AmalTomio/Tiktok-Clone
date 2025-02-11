@@ -7,10 +7,12 @@
         <div class="text-[23px] font-semibold">Upload Video</div>
         <div class="text-gray-400 mt-1">Post a video to your account</div>
       </div>
-
+      <!--@dragover.prevent="$event => $emit('dragover', $event)" -->
       <div class="mt-8 md:flex gap-6">
         <label
-          v-if="false"
+          v-if="!fileDisplay"
+          @drop.prevent="onDrop"
+          @dragover.prevent
           for="fileInput"
           class="mad:mx-0 mx-auto mt-4 mb-6 flex flex-col items-center justify-center w-full max-w-[260px] h-[470px] text-center p-3 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer"
         >
@@ -56,7 +58,7 @@
               loop
               muted
               class="absolute roundd-xl object-cover z-10 p-[13px] w-full h-full"
-              src="/warrior.mp4"
+              :src="fileDisplay"
             ></video>
 
             <div
@@ -69,10 +71,63 @@
                   class="mix-w-[16px]"
                 ></Icon>
                 <div class="text-[11px] pl-1 truncate text-ellipsis">
-                  video name
+                  {{ fileData?.name || "video name" }}
                 </div>
               </div>
+              <button class="text-[11px] ml-2 font-semibold">Change</button>
             </div>
+          </div>
+        </div>
+        <div class="mt-4 mb-6">
+          <div class="flex bg-[#F8F8F8] py-4 px-6">
+            <div>
+              <Icon class="mr-4" size="20" name="mdi:box-cutter-off"></Icon>
+            </div>
+            <div>
+              <div class="text-semibold text-[15px] mb-1.5">
+                Divide videos and edit
+              </div>
+              <div class="text-semibold text-[13px] text-gray-400">
+                You can quickly divide videos into multiple parts, remove
+                redundant part and turn landscape videos into potrait videos
+              </div>
+            </div>
+
+            <div
+              class="flex justify-end max-w-[130px] w-full h-full text-center my-auto"
+            >
+              <button
+                class="px-8 py-1.5 text-white text-[15px] bg-[#F02C56] rounded-md"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <div class="flex items-center justify-between">
+              <div class="mb-1 text-[15px]">Caption</div>
+              <div class="text-gray-400 text-[12px]">0/150</div>
+            </div>
+            <input
+              maxlength="150"
+              type="text"
+              class="w-full border p-2.5 rounded-md focus:outline-none"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              class="px-10 py-2.5 mt-8 border text-[16px] hover:bg-gray-100 rounded-sm"
+            >
+              Discard
+            </button>
+
+            <button
+              class="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[#F02C56] rounded-sm"
+            >
+              Post
+            </button>
           </div>
         </div>
       </div>
@@ -82,4 +137,36 @@
 
 <script setup>
 import UploadLayout from "~/layouts/UploadLayout.vue";
+
+let file = ref(null);
+let fileDisplay = ref(null);
+let errorTYpe = ref(null);
+let caption = ref("");
+let fileData = ref(null);
+let errors = ref(null);
+let isUploading = ref(false);
+
+const onDrop = (e) => {
+  errorTYpe.value = ""; // Ensure this is correctly referenced
+
+  if (!e.dataTransfer.files.length) return; // 🔹 Prevent errors if no file is dropped
+
+  const droppedFile = e.dataTransfer.files[0];
+
+  if (!droppedFile) return; // 🔹 Another safety check
+
+  const extension = droppedFile.name.split(".").pop().toLowerCase(); // Normalize extension
+
+  if (extension !== "mp4") {
+    errorTYpe.value = "file"; // Show error if the file is not an MP4
+    return;
+  }
+
+  // 🔹 Assign values only if the file is valid
+  file.value = droppedFile;
+  fileData.value = droppedFile;
+  fileDisplay.value = URL.createObjectURL(droppedFile);
+
+  console.log("File uploaded:", droppedFile.name); // 🔹 Debugging log
+};
 </script>
