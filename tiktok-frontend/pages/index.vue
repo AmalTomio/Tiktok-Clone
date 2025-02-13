@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="pt-[80px] w-[calc(100%-90px)] max-w-[690px]">
+    <div class="w-[calc(100%-90px)] max-w-[690px]">
       <PostMain></PostMain>
     </div>
   </MainLayout>

@@ -1,4 +1,6 @@
 <template>
+  <UploadError :errorType="errorType" />
+
   <UploadLayout>
     <div
       class="w-full mt-[80px] mb-[40px] bg-white shadow-lg rounded-md py-6 md:px-10 px-4"
@@ -35,7 +37,14 @@
             Select file
           </div>
 
-          <input ref="file" type="file" id="fileInput" hidden accept=".mp4" />
+          <input
+            ref="file"
+            type="file"
+            id="fileInput"
+            @input="onChange"
+            hidden
+            accept=".mp4"
+          />
         </label>
 
         <div
@@ -74,7 +83,12 @@
                   {{ fileData?.name || "video name" }}
                 </div>
               </div>
-              <button class="text-[11px] ml-2 font-semibold">Change</button>
+              <button
+                @click="($event) => clearVideo()"
+                class="text-[11px] ml-2 font-semibold"
+              >
+                Change
+              </button>
             </div>
           </div>
         </div>
@@ -107,9 +121,13 @@
           <div class="mt-5">
             <div class="flex items-center justify-between">
               <div class="mb-1 text-[15px]">Caption</div>
-              <div class="text-gray-400 text-[12px]">0/150</div>
+              <div class="text-gray-400 text-[12px]">
+                {{ caption.length }}/150
+              </div>
             </div>
+            <!-- {{ caption }}-->
             <input
+              v-model="caption"
               maxlength="150"
               type="text"
               class="w-full border p-2.5 rounded-md focus:outline-none"
@@ -118,6 +136,7 @@
 
           <div class="flex gap-3">
             <button
+              @click="discard()"
               class="px-10 py-2.5 mt-8 border text-[16px] hover:bg-gray-100 rounded-sm"
             >
               Discard
@@ -137,36 +156,63 @@
 
 <script setup>
 import UploadLayout from "~/layouts/UploadLayout.vue";
+//import UploadError from "~/components/UploadError.vue";
 
 let file = ref(null);
 let fileDisplay = ref(null);
-let errorTYpe = ref(null);
+let errorType = ref(null);
 let caption = ref("");
 let fileData = ref(null);
 let errors = ref(null);
 let isUploading = ref(false);
 
-const onDrop = (e) => {
-  errorTYpe.value = ""; // Ensure this is correctly referenced
+watch(
+  () => caption.value,
+  (caption) => {
+    if (caption.length >= 150) {
+      errorType.value = "caption";
+      return;
+    }
+    errorType.value = null;
+  }
+);
 
-  if (!e.dataTransfer.files.length) return; // 🔹 Prevent errors if no file is dropped
+const onDrop = (e) => {
+  errorType.value = "";
+
+  if (!e.dataTransfer.files.length) return;
 
   const droppedFile = e.dataTransfer.files[0];
 
-  if (!droppedFile) return; // 🔹 Another safety check
+  if (!droppedFile) return;
 
-  const extension = droppedFile.name.split(".").pop().toLowerCase(); // Normalize extension
+  //display file name
+  const extension = droppedFile.name.split(".").pop().toLowerCase();
 
+  // return error kalau file not .mp4
   if (extension !== "mp4") {
-    errorTYpe.value = "file"; // Show error if the file is not an MP4
+    errorType.value = "files";
     return;
   }
 
-  // 🔹 Assign values only if the file is valid
   file.value = droppedFile;
   fileData.value = droppedFile;
   fileDisplay.value = URL.createObjectURL(droppedFile);
 
-  console.log("File uploaded:", droppedFile.name); // 🔹 Debugging log
+  console.log("File uploaded:", droppedFile.name);
+};
+//discard function
+const discard = () => {
+  file.value = null;
+  fileDisplay.value = null;
+  fileData.value = null;
+  caption.value = "";
+};
+
+//clearvideo function
+const clearVideo = () => {
+  file.value = null;
+  fileDisplay.value = null;
+  fileData.value = null;
 };
 </script>
