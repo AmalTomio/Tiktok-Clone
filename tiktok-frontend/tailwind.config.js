@@ -13,6 +13,9 @@ export default {
       colors: {
         "custom-blue": "#58D5EC",
       },
+      animations: {
+        spin: "spin 1s linear definite",
+      },
     },
   },
   plugins: [],
