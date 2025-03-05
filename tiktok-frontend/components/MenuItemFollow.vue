@@ -10,11 +10,13 @@
     <div class="lg:pl-2.5 lg:block hidden">
       <div class="flex items-center">
         <div class="font-bold text-[14px]">User name</div>
-        <div class="ml-1 rounded-full bg-custom-blue h-[14px] relative">
+        <div
+          class="ml-1 rounded-full bg-custom-blue h-[14px] w-[14px] flex items-center justify-center"
+        >
           <Icon
-            class="relative -top-[5px] text-white"
+            class="text-white"
             name="teenyicons:tick-small-solid"
-            size="15"
+            size="14"
           />
         </div>
       </div>
@@ -22,6 +24,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 defineProps(["user"]);
 </script>
